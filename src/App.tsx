@@ -23,7 +23,7 @@ function App() {
         setCurrentStep(++currentStep);
       else {
         alert("Quiz Completed");
-        setCurrentStep(0);
+        setCurrentStep(0);  
       }
   }
   if(!quiz.length)
