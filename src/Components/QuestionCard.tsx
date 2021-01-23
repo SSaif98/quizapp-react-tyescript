@@ -1,28 +1,55 @@
-import { type } from 'os';
-import React from 'react';
-import {questionPropsType} from './../Types/quiz_types'
+import React, { useState } from 'react';
+import { questionPropsType } from './../Types/quiz_types'
 
-const QuestionCard: React.FC<questionPropsType> = ({question,options, callBack}) =>{
-    return(
-        <div className='question-container'>
-            <div className='question'>
-                {question}
+const QuestionCard: React.FC<questionPropsType> = ({ question, option, callback ,num,steps,colorr}) => {
+
+    let [selectedAns, setSelectedAns] = useState("");
+    let [correct,setcorrect]=useState(false)
+
+    const handleSelection = (ev: any) => {
+        setSelectedAns(ev.target.value);
+        if(colorr==selectedAns){
+            setcorrect(true)
+        }
+    }
+
+    return (
+        <div className="question-container">
+            <div className="question">
+            <h4>{"QUESTION " + (steps+1) +"/" + num}</h4>
+                <h2>{question}</h2>
+            
             </div>
-            <form onSubmit={callBack}>
-                {options.map((opt:string, index: number)=>{
-                    return(
-                        <div key={index}>
-                            <label >
-                            <input type='radio' name='opt' value={opt}/>
-                            {opt}
-                        </label>
-                        </div>
-                    )
-                })}
-                <input type="submit"/> 
-            </form>
 
+            <form onSubmit={(e: React.FormEvent<EventTarget>) => callback(e, selectedAns)}
+                className="question-form"
+                >
+                {
+                    option.map((opt: string, ind: number) => {
+                      
+                        return (
+                            <div key={ind}>
+                                <label className="radio">
+                                    <input type="radio"
+                                       name="question"
+                                       required
+                                       checked={selectedAns === opt}
+                                       onChange={handleSelection}
+                                       value={opt}
+                                    />
+                                    {opt}
+                                   
+                                </label>
+                            </div>
+                        )
+                    })
+                }
+
+             
+                <input  type="submit" className="submit" value={!((steps+1)==num ) ? "NEXTQUESTION" : "SUBMIT"}/>
+            </form>
         </div>
     )
 }
+
 export default QuestionCard;
